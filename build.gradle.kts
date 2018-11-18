@@ -20,4 +20,5 @@ dependencies {
     testCompile(kotlin("test-common"))
     testCompile(kotlin("test-annotations-common"))
     testCompile(kotlin("test-junit"))
+    testCompile("com.willowtreeapps.assertk:assertk-jvm:0.12")
 }
