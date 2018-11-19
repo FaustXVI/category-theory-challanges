@@ -22,8 +22,12 @@ class CompositionShould {
         val times2: (Int) -> Int = { it * 2 }
         val plus5: (Int) -> Int = { it + 5 }
         assertk.assert(compose(times2, plus5)(1)).isEqualTo(7)
+
+        val duplicate: (String) -> String = { it + it }
+        val appendA: (String) -> String = { it + "A" }
+        assertk.assert(compose(duplicate,appendA)("test")).isEqualTo("testtestA")
     }
 
 }
 
-fun compose(g: (Int) -> Int, f: (Int) -> Int): (Int) -> Int = { f(g(it)) }
+fun <T>compose(g: (T) -> T, f: (T) -> T): (T) -> T = { f(g(it)) }
