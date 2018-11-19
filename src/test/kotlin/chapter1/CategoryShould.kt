@@ -14,17 +14,14 @@ class IdentityShould {
 
 }
 
-fun <T> identity(value: T): T = value
-
-
 class CompositionShould {
+
     val times2: (Int) -> Int = { it * 2 }
     val plus5: (Int) -> Int = { it + 5 }
     val duplicate: (String) -> String = { it + it }
     val appendA: (String) -> String = { it + "A" }
     val toDouble: (Int) -> Double = { it * 1.0 }
     val toString: (Double) -> String = { it.toString() }
-
     @Test
     fun chainTwoFunctions() {
         assert(compose(times2, plus5)(1)).isEqualTo(7)
@@ -40,4 +37,3 @@ class CompositionShould {
 
 }
 
-fun <A, B, C> compose(g: (A) -> B, f: (B) -> C): (A) -> C = { f(g(it)) }
