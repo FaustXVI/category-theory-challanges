@@ -1,5 +1,6 @@
 package chapter1
 
+import assertk.assert
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 
@@ -7,27 +8,36 @@ class IdentityShould {
 
     @Test
     fun returnSameValue() {
-        assertk.assert(identity(1)).isEqualTo(1)
-        assertk.assert(identity("value")).isEqualTo("value")
+        assert(identity(1)).isEqualTo(1)
+        assert(identity("value")).isEqualTo("value")
     }
 
-    private fun <T> identity(value: T): T = value
 }
+
+fun <T> identity(value: T): T = value
 
 
 class CompositionShould {
+    val times2: (Int) -> Int = { it * 2 }
+    val plus5: (Int) -> Int = { it + 5 }
+    val duplicate: (String) -> String = { it + it }
+    val appendA: (String) -> String = { it + "A" }
+    val toDouble: (Int) -> Double = { it * 1.0 }
+    val toString: (Double) -> String = { it.toString() }
 
     @Test
     fun chainTwoFunctions() {
-        val times2: (Int) -> Int = { it * 2 }
-        val plus5: (Int) -> Int = { it + 5 }
-        assertk.assert(compose(times2, plus5)(1)).isEqualTo(7)
+        assert(compose(times2, plus5)(1)).isEqualTo(7)
+        assert(compose(duplicate, appendA)("test")).isEqualTo("testtestA")
+        assert(compose(toDouble, toString)(2)).isEqualTo("2.0")
+    }
 
-        val duplicate: (String) -> String = { it + it }
-        val appendA: (String) -> String = { it + "A" }
-        assertk.assert(compose(duplicate,appendA)("test")).isEqualTo("testtestA")
+    @Test
+    fun respectIdentity() {
+        assert(compose(times2, ::identity)(1)).isEqualTo(times2(1))
+        assert(compose<Int, Int, Int>(::identity, times2)(1)).isEqualTo(times2(1))
     }
 
 }
 
-fun <T>compose(g: (T) -> T, f: (T) -> T): (T) -> T = { f(g(it)) }
+fun <A, B, C> compose(g: (A) -> B, f: (B) -> C): (A) -> C = { f(g(it)) }
