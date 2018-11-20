@@ -3,8 +3,10 @@ package chapter2
 import assertk.assert
 import assertk.assertions.isEqualTo
 import assertk.assertions.isLessThan
+import assertk.assertions.isNotEqualTo
 import java.time.Duration
 import java.time.LocalTime
+import kotlin.random.Random
 import kotlin.test.Test
 
 class MemoizeShould {
@@ -15,6 +17,13 @@ class MemoizeShould {
         checkMemoization(square, 2)
         val toDouble: (String) -> Double = { it.toDouble() }
         checkMemoization(toDouble, "2.0")
+    }
+
+
+    @Test
+    fun notWorkForRandomGenerator() {
+        val randomNumber: (Unit) -> Int = { Random.nextInt() }
+        assert(randomNumber(Unit)).isNotEqualTo(randomNumber(Unit))
     }
 
     private fun <A, B> checkMemoization(function: (A) -> B, parameter: A) {
