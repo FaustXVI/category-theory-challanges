@@ -11,22 +11,24 @@ class MemoizeShould {
 
     @Test
     fun cacheResult() {
-        val function: (Int) -> Int = { it * 2 }
+        val square: (Int) -> Int = { it * it }
+        checkMemoization(square, 2)
+        val toDouble: (String) -> Double = { it.toDouble() }
+        checkMemoization(toDouble, "2.0")
+    }
+
+    private fun <A, B> checkMemoization(function: (A) -> B, parameter: A) {
         val executionDuration = Duration.ofMillis(100)
-        val slowedFunction: (Int) -> Int = { n -> Thread.sleep(executionDuration.toMillis()); function(n) }
+        val slowedFunction: (A) -> B = { n -> Thread.sleep(executionDuration.toMillis()); function(n) }
         val memoizeFunction = memoize(slowedFunction)
+        val firstResult = memoizeFunction(parameter)
         val startTime = LocalTime.now()
-        val firstResult = memoizeFunction(2)
-        val secondResult = memoizeFunction(2)
-        val totalExecutionDuration = Duration.between(startTime, LocalTime.now())
-        assert(totalExecutionDuration).isLessThan(executionDuration + executionDuration)
+        val secondResult = memoizeFunction(parameter)
+        val secondExecutionDuration = Duration.between(startTime, LocalTime.now())
+        assert(secondExecutionDuration).isLessThan(executionDuration)
         assert(secondResult).isEqualTo(firstResult)
     }
 
 }
 
 
-fun memoize(function: (Int) -> Int): (Int) -> Int {
-    val memoizeCache = mutableMapOf<Int, Int>()
-    return { memoizeCache.computeIfAbsent(it, function) }
-}
