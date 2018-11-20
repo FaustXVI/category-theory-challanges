@@ -25,6 +25,11 @@ class MemoizeShould {
         val randomNumber: (Unit) -> Int = { Random.nextInt() }
         assert(randomNumber(Unit)).isNotEqualTo(randomNumber(Unit))
     }
+    @Test
+    fun worksForSeededRandomGeneratorBecauseTheGeneratorIsDropped() {
+        val seedRandomNumber: (Int) -> Int = { Random(it).nextInt() }
+        assert(seedRandomNumber(42)).isEqualTo(seedRandomNumber(42))
+    }
 
     private fun <A, B> checkMemoization(function: (A) -> B, parameter: A) {
         val executionDuration = Duration.ofMillis(100)
