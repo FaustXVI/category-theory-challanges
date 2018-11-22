@@ -9,7 +9,7 @@ class IdentityShould {
     @Test
     fun returnSameValue() {
         assert(identity(1)).isEqualTo(1)
-        assert(identity("value")).isEqualTo("value")
+        assert(identity("v")).isEqualTo("v")
     }
 
 }
