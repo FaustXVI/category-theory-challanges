@@ -21,5 +21,13 @@ class Challanges {
         assert(maybeToEither(eitherToMaybe(left))).isEqualTo(left)
     }
 
+    @Test
+    fun question5() {
+        val sum: Either<Int, Int> = Either.Left(31)
+        val product: Pair<Boolean, Int> = Pair(false, 31)
+
+        assert(eitherToPair(sum)).isEqualTo(product)
+    }
+
 }
 
