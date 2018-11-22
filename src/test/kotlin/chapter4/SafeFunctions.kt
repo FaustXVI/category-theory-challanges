@@ -27,5 +27,11 @@ class SafeFunctions {
         assert(safeRoot(-2.0)).isEqualTo(Maybe.Nothing<Double>())
     }
 
+    @Test
+    fun shouldGiveSafeRootReciprocal() {
+        assert(safeRootReciprocal(0.25).value).isEqualTo(sqrt(1 / 0.25))
+    }
+
+
 
 }
