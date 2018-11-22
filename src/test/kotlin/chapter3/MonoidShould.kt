@@ -10,6 +10,7 @@ class MonoidShould {
     internal fun respectLaws() {
         checkMonoid(setOf(true, false), false, Boolean::or)
         checkMonoid(setOf(true, false), true, Boolean::and)
+        checkMonoid(setOf(0, 1, 2), 0) { a, b -> (a + b) % 3 }
     }
 
     private fun <T> checkMonoid(values: Set<T>, zero: T, operation: (T, T) -> T) {
