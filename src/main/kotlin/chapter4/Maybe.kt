@@ -31,5 +31,12 @@ sealed class Maybe<T> {
 
     companion object {
         fun <T> identity(value: T): Maybe<T> = Just(value)
+        fun <A, B, C> compose(f: (B) -> Maybe<C>, g: (A) -> Maybe<B>): (A) -> Maybe<C> = { x ->
+            val gResult = g(x)
+            when (gResult) {
+                is Nothing -> Nothing()
+                else -> f(gResult.value)
+            }
+        }
     }
 }
