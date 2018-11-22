@@ -23,17 +23,15 @@ class Challanges {
 
     @Test
     fun question5() {
-        val sum: Either<Int, Int> = Either.Left(31)
-        val product: Pair<Boolean, Int> = Pair(false, 31)
+        val sum31: Either<Int, Int> = Either.Left(31)
+        val product31: Pair<Boolean, Int> = Pair(false, 31)
+        val sum42: Either<Int, Int> = Either.Right(42)
+        val product42: Pair<Boolean, Int> = Pair(true, 42)
 
-        assert(eitherToPair(sum)).isEqualTo(product)
-        assert(pairToEither(product)).isEqualTo(sum)
-    }
-
-    private fun pairToEither(product: Pair<Boolean, Int>): Either<Int, Int> = if (product.first) {
-        TODO()
-    } else {
-        Either.Left(product.second)
+        assert(eitherToPair(sum31)).isEqualTo(product31)
+        assert(pairToEither(product31)).isEqualTo(sum31)
+        assert(eitherToPair(sum42)).isEqualTo(product42)
+        assert(pairToEither(product42)).isEqualTo(sum42)
     }
 
 }
