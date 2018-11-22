@@ -28,7 +28,7 @@ class PartialShould {
     fun haveComposition() {
         val f = makeTotal { it * 2 }
         val g = makeTotal { it + 2 }
-        assert(Maybe.compose(f,g)(1)).isEqualTo(Maybe.Just(6))
+        assert(Maybe.compose(f, g)(1)).isEqualTo(Maybe.Just(6))
     }
 
 }
