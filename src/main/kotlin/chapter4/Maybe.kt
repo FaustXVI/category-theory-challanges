@@ -15,17 +15,11 @@ sealed class Maybe<T> {
     data class Just<T>(override val value: T) : Maybe<T>()
     class Nothing<T> : Maybe<T>() {
         override val value: T
-            get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+            get() = TODO("No value")
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (javaClass != other?.javaClass) return false
-            return true
-        }
+        override fun equals(other: Any?): Boolean = other is Nothing<*>
 
-        override fun hashCode(): Int {
-            return javaClass.hashCode()
-        }
+        override fun hashCode(): Int = 0
 
     }
 
