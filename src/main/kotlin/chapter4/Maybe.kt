@@ -12,7 +12,7 @@ fun makeTotal(f: (Int) -> Int): (Int) -> Maybe<Int> = { x ->
 sealed class Maybe<T> {
     abstract val value: T
 
-    class Just<T>(override val value: T) : Maybe<T>()
+    data class Just<T>(override val value: T) : Maybe<T>()
     class Nothing<T> : Maybe<T>() {
         override val value: T
             get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
@@ -27,5 +27,9 @@ sealed class Maybe<T> {
             return javaClass.hashCode()
         }
 
+    }
+
+    companion object {
+        fun <T> identity(value: T): Maybe<T> = Just(value)
     }
 }

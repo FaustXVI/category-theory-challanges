@@ -19,6 +19,11 @@ class PartialShould {
         assert(makeTotal(f)(2)).isEqualTo(Maybe.Nothing<Int>())
     }
 
+    @Test
+    fun haveIdentity() {
+        assert(Maybe.identity(2)).isEqualTo(Maybe.Just(2))
+    }
+
 }
 
 
