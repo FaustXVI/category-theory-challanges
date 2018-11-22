@@ -1,6 +1,7 @@
 package chapter3
 
 import assertk.assert
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 
@@ -33,6 +34,7 @@ class MonoidShould {
             assert(operation(it, zero)).isEqualTo(it)
             assert(operation(zero, it)).isEqualTo(it)
         }
+        assert(values).contains(zero)
     }
 
 }
