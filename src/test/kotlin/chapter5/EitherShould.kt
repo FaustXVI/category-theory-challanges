@@ -36,5 +36,24 @@ class EitherShould {
         assert(compose(right, m)(false)).isEqualTo(j(false))
     }
 
+    @Test
+    fun question6() {
+        val i: (Int) -> Int = { it }
+        val j: (Boolean) -> Int = { if (it) 0 else 1 }
+        val left: (Int) -> Either<Int, Boolean> = ::Left
+        val right: (Boolean) -> Either<Int, Boolean> = ::Right
+
+        val m: (Either<Int, Boolean>) -> Int = genericM(i, j)
+
+        assert(compose(left, m)(42)).isEqualTo(i(42))
+        assert(compose(right, m)(false)).isEqualTo(j(false))
+    }
+
 }
 
+fun genericM(i: (Int) -> Int, j: (Boolean) -> Int): (Either<Int, Boolean>) -> Int = {
+    when (it) {
+        is Left -> i(it.v)
+        is Right -> j(it.v)
+    }
+}
