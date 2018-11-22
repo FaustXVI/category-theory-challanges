@@ -10,16 +10,10 @@ class EitherShould {
     @Test
     fun containsEitherType1OrType2() {
         val left: Either<Int, String> = Either.Left(2)
-        assert(left.asLeft()).isEqualTo(2)
+        val right: Either<Int, String> = Either.Right("value")
+        assert((left as Either.Left).v).isEqualTo(2)
+        assert((right as Either.Right).v).isEqualTo("value")
     }
 
 }
 
-sealed class Either<T, U> {
-    abstract fun asLeft(): T
-
-    data class Left<T, U>(val v: T) : Either<T, U>() {
-        override fun asLeft(): T = v
-    }
-
-}
