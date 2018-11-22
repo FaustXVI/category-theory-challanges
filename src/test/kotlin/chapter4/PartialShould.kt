@@ -2,6 +2,7 @@ package chapter4
 
 import assertk.assert
 import assertk.assertions.isEqualTo
+import java.lang.IllegalArgumentException
 import kotlin.test.Test
 
 class PartialShould {
@@ -12,13 +13,12 @@ class PartialShould {
         assert(makeTotal(f)(2).value).isEqualTo(f(2))
     }
 
+    @Test
+    fun catchesExceptionsAndReturnsNothing() {
+        val f: (Int) -> Int = { throw IllegalArgumentException() }
+        assert(makeTotal(f)(2)).isEqualTo(Maybe.Nothing<Int>())
+    }
+
 }
-
-fun makeTotal(f: (Int) -> Int): (Int) -> Maybe<Int> = { x ->
-    Maybe(f(x))
-}
-
-
-data class Maybe<T>(val value: T)
 
 
