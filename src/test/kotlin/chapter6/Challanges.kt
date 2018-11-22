@@ -27,6 +27,13 @@ class Challanges {
         val product: Pair<Boolean, Int> = Pair(false, 31)
 
         assert(eitherToPair(sum)).isEqualTo(product)
+        assert(pairToEither(product)).isEqualTo(sum)
+    }
+
+    private fun pairToEither(product: Pair<Boolean, Int>): Either<Int, Int> = if (product.first) {
+        TODO()
+    } else {
+        Either.Left(product.second)
     }
 
 }
