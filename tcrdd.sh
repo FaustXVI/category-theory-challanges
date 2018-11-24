@@ -35,11 +35,6 @@ function sync() {
     && git push
 }
 
-function isErrorMessageOK() {
-    read -r -p "Is the error message expressive? [Y/n] " answer
-    [[ -z ${answer} || ${answer} == "Y" || ${answer} == "y" ]]
-}
-
 KNOWN_AS_GREEN=false
 KNOWN_AS_RED=false
 
@@ -64,7 +59,7 @@ done
 
 if ${KNOWN_AS_RED} || (! ${KNOWN_AS_GREEN} && testJustAdded)
 then
-    runTest && revert || (isErrorMessageOK && commit)
+    runTest && revert || commit
 else
     runTest && (commit && sync) || revert
 fi
