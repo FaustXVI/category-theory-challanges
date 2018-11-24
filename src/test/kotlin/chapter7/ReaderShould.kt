@@ -2,10 +2,18 @@ package chapter7
 
 import assertk.assert
 import assertk.assertions.isEqualTo
+import chapter1.compose
 import chapter1.identity
 import kotlin.test.Test
 
 class ReaderShould {
+
+    @Test
+    fun changeTypeAfterFmap() {
+        val function: (Int) -> Double = { it + 42.0 }
+        val reader = Reader(function)
+        assert((reader.fmap(Double::toString))(13)).isEqualTo("55.0")
+    }
 
     @Test
     fun respectIdentity() {
@@ -16,9 +24,9 @@ class ReaderShould {
 
 }
 
-class Reader(val function: (Int) -> Int) {
-    fun fmap(g: (Int) -> Int): Reader = this
+class Reader<R, A>(val function: (R) -> A) {
+    fun <B> fmap(g: (A) -> B): Reader<R, B> = Reader(compose(function, g))
 
-    operator fun invoke(value: Int): Int = value
+    operator fun invoke(value: R): A = function(value)
 
 }
