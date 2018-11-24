@@ -40,7 +40,24 @@ function isErrorMessageOK() {
     [[ -z ${answer} || ${answer} == "Y" || ${answer} == "y" ]]
 }
 
-if shouldBeRed
+KNOWN_AS_GREEN=false
+
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+
+    case ${key} in
+        -g|--green)
+            KNOWN_AS_GREEN=true
+            shift
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
+
+if (! ${KNOWN_AS_GREEN}) && shouldBeRed
 then
     runTest && revert || (isErrorMessageOK && commit)
 else
