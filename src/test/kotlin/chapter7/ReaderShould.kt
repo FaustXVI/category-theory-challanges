@@ -16,10 +16,21 @@ class ReaderShould {
     }
 
     @Test
-    fun respectIdentity() {
+    fun conserveIdentity() {
         val function: (Int) -> Int = { it + 42 }
         val reader = Reader(function)
         assert((reader.fmap(::identity))(13)).isEqualTo(Reader(identity(function))(13))
+    }
+
+    @Test
+    fun conserveComposition() {
+        val function: (Int) -> Int = { it + 13 }
+        val f: (Int) -> Int = { it + 42 }
+        val g: (Int) -> Int = { it + 37 }
+        val reader = Reader(function)
+        val fmapf: (Reader<Int, Int>) -> Reader<Int, Int> = { it.fmap(f) }
+        val fmapg: (Reader<Int, Int>) -> Reader<Int, Int> = { it.fmap(g) }
+        assert(reader.fmap(compose(f,g))(13)).isEqualTo(compose(fmapf, fmapg)(reader)(13))
     }
 
 }
