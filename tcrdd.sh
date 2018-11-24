@@ -41,6 +41,7 @@ function isErrorMessageOK() {
 }
 
 KNOWN_AS_GREEN=false
+KNOWN_AS_RED=false
 
 while [[ $# -gt 0 ]]
 do
@@ -51,13 +52,17 @@ do
             KNOWN_AS_GREEN=true
             shift
             ;;
+        -r|--red)
+            KNOWN_AS_RED=true
+            shift
+            ;;
         *)
             shift
             ;;
     esac
 done
 
-if (! ${KNOWN_AS_GREEN}) && testJustAdded
+if ${KNOWN_AS_RED} || (! ${KNOWN_AS_GREEN} && testJustAdded)
 then
     runTest && revert || (isErrorMessageOK && commit)
 else
