@@ -5,19 +5,19 @@ function runTest() {
     ./gradlew test
 }
 
-function shouldBeRed(){
+function testJustAdded(){
     [[ ! -z `git diff HEAD | grep "^\+.*@Test"` ]]
 }
 
-function shouldBecomeGreen(){
+function notSynchronisedYet(){
     [[ ! -z `git diff ${BRANCH} HEAD` ]]
 }
 
 function commit() {
     git add . && \
-    if shouldBeRed; then
+    if testJustAdded; then
         git commit
-    elif shouldBecomeGreen; then
+    elif notSynchronisedYet; then
         git commit --amend --no-edit
     else
         git commit --allow-empty-message -m ""
@@ -57,7 +57,7 @@ do
     esac
 done
 
-if (! ${KNOWN_AS_GREEN}) && shouldBeRed
+if (! ${KNOWN_AS_GREEN}) && testJustAdded
 then
     runTest && revert || (isErrorMessageOK && commit)
 else
