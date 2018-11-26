@@ -18,6 +18,7 @@ plugins {
 
 dependencies {
     compile(kotlin("stdlib", "1.3.10"))
+    compile(kotlin("stdlib-jdk8", "1.3.10"))
     compile(kotlin("reflect", "1.3.10"))
     testCompile(kotlin("test-common", "1.3.10"))
     testCompile(kotlin("test-annotations-common", "1.3.10"))
