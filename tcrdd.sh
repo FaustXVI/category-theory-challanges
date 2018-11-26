@@ -3,7 +3,7 @@ BRANCH=origin/master
 TEST_KEYWORD="@Test"
 
 function runTest() {
-    ./gradlew test
+    ./gradlew test -q && echo passed
 }
 
 function testJustAdded(){
