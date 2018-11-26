@@ -23,15 +23,20 @@ class Challanges {
     fun preListIsABifunctor() {
         val emptyPreList: PreList<Int, String> = PreList.Nil()
         assert(emptyPreList.bimap(Int::toString, String::toBoolean)).isEqualTo(PreList.Nil<String, Boolean>())
+        val consPreList: PreList<Int, String> = PreList.Cons(42, "true")
+        assert(consPreList.bimap(Int::toString, String::toBoolean)).isEqualTo(PreList.Cons<String, Boolean>("42", true))
     }
 }
 
 sealed class PreList<A, B> : Bifunctor<A, B> {
-    class Nil<A, B>() : PreList<A, B>() {
+    class Nil<A, B> : PreList<A, B>() {
         override fun <C, D> bimap(f: (A) -> C, g: (B) -> D): Bifunctor<C, D> = Nil()
         override fun equals(other: Any?): Boolean = other is Nil<*, *>
         override fun hashCode(): Int = 0
+    }
 
+    data class Cons<A, B>(val a: A, val b: B) : PreList<A, B>() {
+        override fun <C, D> bimap(f: (A) -> C, g: (B) -> D): Bifunctor<C, D> = Cons(f(a), g(b))
     }
 }
 
