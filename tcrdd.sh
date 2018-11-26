@@ -1,27 +1,39 @@
 #!/usr/bin/env bash
 BRANCH=origin/master
+TEST_KEYWORD="@Test"
 
 function runTest() {
     ./gradlew test
 }
 
 function testJustAdded(){
-    [[ ! -z `git diff HEAD | grep "^\+.*@Test"` ]]
+    [[ ! -z `git diff HEAD | grep "^\+.*${TEST_KEYWORD}"` ]]
 }
 
-function notSynchronisedYet(){
-    [[ ! -z `git diff ${BRANCH} HEAD` ]]
-}
+RED_REF=refs/isRed
 
-function commit() {
+function commitRed() {
     git add . && \
-    if testJustAdded; then
+    if lastCommitRed; then
+        git commit --amend
+    else
         git commit
-    elif notSynchronisedYet; then
+    fi && \
+    git update-ref ${RED_REF} HEAD
+}
+
+function commitGreen() {
+    git add . && \
+    if lastCommitRed; then
         git commit --amend --no-edit
     else
         git commit --allow-empty-message -m ""
-    fi
+    fi && \
+    git update-ref -d ${RED_REF}
+}
+
+function lastCommitRed(){
+    [[ `git describe --all ${RED_REF} 2>/dev/null` && -z `git diff ${RED_REF} HEAD 2>/dev/null` ]]
 }
 
 function revert() {
@@ -29,11 +41,26 @@ function revert() {
     git clean -f
 }
 
-function sync() {
-    git rebase ${BRANCH} \
-    && runTest \
-    && git push
+function pull(){
+    if needsPull; then
+        git pull --rebase
+    fi
 }
+
+function needsPull(){
+    [[ ! -z `git fetch --dry-run 2>&1` ]]
+}
+
+function push() {
+    if needsPush; then
+        runTest && git push
+    fi
+}
+
+function needsPush(){
+    [[ ! -z `git diff ${BRANCH} HEAD` ]]
+}
+
 
 KNOWN_AS_GREEN=false
 KNOWN_AS_RED=false
@@ -59,7 +86,9 @@ done
 
 if ${KNOWN_AS_RED} || (! ${KNOWN_AS_GREEN} && testJustAdded)
 then
-    runTest && revert || commit
+    runTest && revert || commitRed
+    pull
 else
-    runTest && (commit && sync) || revert
+    runTest && commitGreen || revert
+    pull && push
 fi
