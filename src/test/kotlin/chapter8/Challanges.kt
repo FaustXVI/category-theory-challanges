@@ -11,6 +11,6 @@ class Challanges {
     }
 }
 
-data class MyPair(val first: Int, val second: String) {
-    fun bimap(f: (Int) -> Int, g: (String) -> String): MyPair = MyPair(f(first), g(second))
+data class MyPair<A, B>(val first: A, val second: B) {
+    fun <C, D> bimap(f: (A) -> C, g: (B) -> D): MyPair<C, D> = MyPair(f(first), g(second))
 }
