@@ -15,9 +15,9 @@ RED_REF=refs/isRed
 function commitRed() {
     git add . && \
     if lastCommitRed; then
-        git commit --amend
+        git commit -q --amend
     else
-        git commit
+        git commit -q
     fi && \
     git update-ref ${RED_REF} HEAD
 }
@@ -25,9 +25,9 @@ function commitRed() {
 function commitGreen() {
     git add . && \
     if lastCommitRed; then
-        git commit --amend --no-edit
+        git commit -q --amend --no-edit
     else
-        git commit --allow-empty-message -m ""
+        git commit -q --allow-empty-message -m ""
     fi && \
     git update-ref -d ${RED_REF}
 }
@@ -43,7 +43,7 @@ function revert() {
 
 function pull(){
     if needsPull; then
-        git pull --rebase
+        git pull --rebase -q
     fi
 }
 
@@ -53,7 +53,7 @@ function needsPull(){
 
 function push() {
     if needsPush; then
-        runTest && git push
+        runTest && git push -q
     fi
 }
 
