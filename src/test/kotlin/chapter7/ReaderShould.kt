@@ -30,13 +30,18 @@ class ReaderShould {
         val reader = Reader(function)
         val fmapf: (Reader<Int, Int>) -> Reader<Int, Int> = { it.fmap(f) }
         val fmapg: (Reader<Int, Int>) -> Reader<Int, Int> = { it.fmap(g) }
-        assert(reader.fmap(compose(f,g))(13)).isEqualTo(compose(fmapf, fmapg)(reader)(13))
+        assert(reader.fmap(compose(f, g))(13)).isEqualTo(compose(fmapf, fmapg)(reader)(13))
     }
 
 }
 
-class Reader<R, A>(val function: (R) -> A) {
-    fun <B> fmap(g: (A) -> B): Reader<R, B> = Reader(compose(function, g))
+interface Functor<T> {
+    fun <R> fmap(f: (T) -> R): Functor<R>
+}
+
+class Reader<R, A>(val function: (R) -> A) : Functor<A> {
+
+    override fun <B> fmap(f: (A) -> B): Reader<R, B> = Reader(compose(function, f))
 
     operator fun invoke(value: R): A = function(value)
 
