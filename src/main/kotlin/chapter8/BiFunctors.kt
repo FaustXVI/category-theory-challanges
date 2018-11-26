@@ -10,7 +10,7 @@ interface Bifunctor<A, B> {
 }
 
 data class MyPair<A, B>(val first: A, val second: B) : Bifunctor<A, B>, Functor<B> {
-    override fun <R> fmap(f: (B) -> R): MyPair<A, R> = bimap(::identity, f)
+    override fun <R> fmap(f: (B) -> R): MyPair<A, R> = second(f) as MyPair<A, R>
 
     override fun <C, D> bimap(f: (A) -> C, g: (B) -> D): MyPair<C, D> = MyPair(f(first), g(second))
 }
