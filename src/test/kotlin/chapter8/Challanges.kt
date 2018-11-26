@@ -12,5 +12,11 @@ class Challanges {
         assert(myPair.first { it + 1 }).isEqualTo(MyPair(3, "toto"))
         assert(myPair.second { it + "test" }).isEqualTo(MyPair(2, "tototest"))
     }
+
+    @Test
+    fun pairIsAFunctor() {
+        val myPair = MyPair(2, "toto")
+        assert(myPair.fmap { it + "test" }).isEqualTo(MyPair(2, "tototest"))
+    }
 }
 
