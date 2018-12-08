@@ -15,9 +15,7 @@ sealed class Maybe<T> {
     abstract val value: T
 
     data class Just<T>(override val value: T) : Maybe<T>() {
-        override fun map(f: (T) -> T): Maybe<T> {
-            TODO("not implemented")
-        }
+        override fun map(f: (T) -> T): Maybe<T> = Maybe.Just(f(value))
     }
 
     class Nothing<T> : Maybe<T>() {
