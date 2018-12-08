@@ -6,6 +6,10 @@ import assertk.assert
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import chapter7.Reader
+import java.time.LocalTime
+import java.util.*
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 class NaturalTransformationShould {
 
@@ -49,6 +53,15 @@ class NaturalTransformationShould {
     @Test
     fun transformation2ofReader() {
         val transformation: (Reader<Unit, Int>) -> List<Int> = { listOf(it(Unit)) }
+        val f: (Int) -> Int = { it * 2 }
+        val reader: Reader<Unit, Int> = Reader { 42 }
+        assert(transformation(reader).map(f)).isEqualTo(transformation(reader.fmap(f)))
+    }
+
+    @Test
+    fun transformation3ofReader() {
+        val n = Random(LocalTime.now().nano).nextInt(2..100)
+        val transformation: (Reader<Unit, Int>) -> List<Int> = { r -> List(n) { r(Unit) } }
         val f: (Int) -> Int = { it * 2 }
         val reader: Reader<Unit, Int> = Reader { 42 }
         assert(transformation(reader).map(f)).isEqualTo(transformation(reader.fmap(f)))
