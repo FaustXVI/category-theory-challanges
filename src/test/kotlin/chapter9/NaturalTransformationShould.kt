@@ -66,4 +66,12 @@ class NaturalTransformationShould {
         assert(transformation(reader).map(f)).isEqualTo(transformation(reader.fmap(f)))
     }
 
+    @Test
+    fun transformation1ofReaderBool() {
+        val transformation: (Reader<Boolean, Int>) -> Maybe<Int> = { Maybe.Nothing() }
+        val f: (Int) -> Int = { it * 2 }
+        val reader: Reader<Boolean, Int> = Reader { if (it) 42 else 0 }
+        assert(transformation(reader).fmap(f)).isEqualTo(transformation(reader.fmap(f)))
+    }
+
 }
