@@ -1,5 +1,7 @@
 package chapter4
 
+import chapter7.Functor
+
 fun makeTotal(f: (Int) -> Int): (Int) -> Maybe<Int> = { x ->
     try {
 
@@ -9,8 +11,7 @@ fun makeTotal(f: (Int) -> Int): (Int) -> Maybe<Int> = { x ->
     }
 }
 
-sealed class Maybe<T> {
-    abstract fun <R> fmap(f: (T) -> R): Maybe<R>
+sealed class Maybe<T> : Functor<T> {
 
     abstract val value: T
 
