@@ -8,15 +8,15 @@ import assertk.assertions.isEqualTo
 class NaturalTransformationShould {
 
     @Test
-    fun transformsAMaybeIntoAList() {
-        val nothing: Maybe<Int> = Maybe.Nothing()
-        val two: Maybe<Int> = Maybe.Just(2)
+    fun collapseToEmptyListIsANaturalTransformation() {
+        val transformation: (Maybe<Int>) -> List<Int> = { emptyList() }
         val f: (Int) -> Int = { it * 2 }
-        val transformation = ::maybeToList
+        checkNaturalityCondition(transformation, Maybe.Nothing(), f)
+        checkNaturalityCondition(transformation, Maybe.Just(2), f)
+    }
+
+    private fun checkNaturalityCondition(transformation: (Maybe<Int>) -> List<Int>, nothing: Maybe<Int>, f: (Int) -> Int) {
         assert(transformation(nothing).map(f)).isEqualTo(transformation(nothing.map(f)))
-        assert(transformation(two).map(f)).isEqualTo(transformation(two.map(f)))
     }
 
 }
-
-fun maybeToList(maybe: Maybe<Int>): List<Int> = emptyList()
