@@ -46,4 +46,12 @@ class NaturalTransformationShould {
         assert(transformation(reader).map(f)).isEqualTo(transformation(reader.fmap(f)))
     }
 
+    @Test
+    fun transformation2ofReader() {
+        val transformation: (Reader<Unit, Int>) -> List<Int> = { listOf(it(Unit)) }
+        val f: (Int) -> Int = { it * 2 }
+        val reader: Reader<Unit, Int> = Reader { 42 }
+        assert(transformation(reader).map(f)).isEqualTo(transformation(reader.fmap(f)))
+    }
+
 }
