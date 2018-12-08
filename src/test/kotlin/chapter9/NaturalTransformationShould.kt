@@ -32,8 +32,8 @@ class NaturalTransformationShould {
         assert(maybeToList(Maybe.Just("2")).map(f)).isEqualTo(maybeToList(Maybe.Just("2").map(f)))
     }
 
-    private fun checkNaturalityCondition(transformation: (Maybe<Int>) -> List<Int>, nothing: Maybe<Int>, f: (Int) -> Int) {
-        assert(transformation(nothing).map(f)).isEqualTo(transformation(nothing.map(f)))
+    private fun checkNaturalityCondition(transformation: (Maybe<Int>) -> List<Int>, maybe: Maybe<Int>, f: (Int) -> Int) {
+        assert(transformation(maybe).map(f)).isEqualTo(transformation(maybe.map(f)))
     }
 
 }
