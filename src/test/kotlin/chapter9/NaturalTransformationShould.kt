@@ -42,7 +42,7 @@ class NaturalTransformationShould {
 
 
     @Test
-    fun transformation1ofReader() {
+    fun transformation1ofReaderUnit() {
         val transformation: (Reader<Unit, Int>) -> List<Int> = { emptyList() }
         val f: (Int) -> Int = { it * 2 }
         val reader: Reader<Unit, Int> = Reader { 42 }
@@ -50,7 +50,7 @@ class NaturalTransformationShould {
     }
 
     @Test
-    fun transformation2ofReader() {
+    fun transformation2ofReaderUnit() {
         val transformation: (Reader<Unit, Int>) -> List<Int> = { listOf(it(Unit)) }
         val f: (Int) -> Int = { it * 2 }
         val reader: Reader<Unit, Int> = Reader { 42 }
@@ -58,7 +58,7 @@ class NaturalTransformationShould {
     }
 
     @Test
-    fun transformation3ofReader() {
+    fun transformation3ofReaderUnit() {
         val n = Random(LocalTime.now().nano).nextInt(2..100)
         val transformation: (Reader<Unit, Int>) -> List<Int> = { r -> List(n) { r(Unit) } }
         val f: (Int) -> Int = { it * 2 }
