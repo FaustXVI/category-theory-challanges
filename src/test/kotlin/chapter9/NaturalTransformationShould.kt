@@ -18,7 +18,7 @@ class NaturalTransformationShould {
 
     @Test
     fun transformationToSingletonListIsANaturalTransformation() {
-        val transformation: (Maybe<Int>) -> List<Int> = ::maybeToList
+        val transformation: (Maybe<Int>) -> List<Int> = { it.toList() }
         val f: (Int) -> Int = { it * 2 }
         assert(transformation(Maybe.Just(2))).contains(2)
         checkNaturalityCondition(transformation, Maybe.Nothing(), f)
@@ -28,8 +28,8 @@ class NaturalTransformationShould {
     @Test
     fun transformationIsPolymorphic() {
         val f: (String) -> Int = { it.toInt() }
-        assert(maybeToList(Maybe.Nothing<String>()).map(f)).isEqualTo(maybeToList(Maybe.Nothing<String>().map(f)))
-        assert(maybeToList(Maybe.Just("2")).map(f)).isEqualTo(maybeToList(Maybe.Just("2").map(f)))
+        assert(Maybe.Nothing<String>().toList().map(f)).isEqualTo(Maybe.Nothing<String>().map(f).toList())
+        assert(Maybe.Just("2").toList().map(f)).isEqualTo(Maybe.Just("2").map(f).toList())
     }
 
     private fun checkNaturalityCondition(transformation: (Maybe<Int>) -> List<Int>, maybe: Maybe<Int>, f: (Int) -> Int) {
