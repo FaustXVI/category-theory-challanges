@@ -7,7 +7,6 @@ import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import chapter7.Reader
 import java.time.LocalTime
-import java.util.*
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -18,9 +17,9 @@ class NaturalTransformationShould {
         val transformation: (Maybe<Int>) -> List<Int> = { emptyList() }
         val f: (Int) -> Int = { it * 2 }
         val maybe: Maybe.Nothing<Int> = Maybe.Nothing()
-        assert(transformation(maybe).map(f)).isEqualTo(transformation(maybe.map(f)))
+        assert(transformation(maybe).map(f)).isEqualTo(transformation(maybe.fmap(f)))
         val maybe1 = Maybe.Just(2)
-        assert(transformation(maybe1).map(f)).isEqualTo(transformation(maybe1.map(f)))
+        assert(transformation(maybe1).map(f)).isEqualTo(transformation(maybe1.fmap(f)))
     }
 
     @Test
@@ -29,16 +28,16 @@ class NaturalTransformationShould {
         val f: (Int) -> Int = { it * 2 }
         assert(transformation(Maybe.Just(2))).contains(2)
         val maybe: Maybe.Nothing<Int> = Maybe.Nothing()
-        assert(transformation(maybe).map(f)).isEqualTo(transformation(maybe.map(f)))
+        assert(transformation(maybe).map(f)).isEqualTo(transformation(maybe.fmap(f)))
         val maybe1 = Maybe.Just(2)
-        assert(transformation(maybe1).map(f)).isEqualTo(transformation(maybe1.map(f)))
+        assert(transformation(maybe1).map(f)).isEqualTo(transformation(maybe1.fmap(f)))
     }
 
     @Test
     fun transformationIsPolymorphic() {
         val f: (String) -> Int = { it.toInt() }
-        assert(Maybe.Nothing<String>().toList().map(f)).isEqualTo(Maybe.Nothing<String>().map(f).toList())
-        assert(Maybe.Just("2").toList().map(f)).isEqualTo(Maybe.Just("2").map(f).toList())
+        assert(Maybe.Nothing<String>().toList().map(f)).isEqualTo(Maybe.Nothing<String>().fmap(f).toList())
+        assert(Maybe.Just("2").toList().map(f)).isEqualTo(Maybe.Just("2").fmap(f).toList())
     }
 
 
