@@ -25,13 +25,20 @@ class NaturalTransformationShould {
         checkNaturalityCondition(transformation, Maybe.Just(2), f)
     }
 
+    @Test
+    fun transformationIsPolymorphic() {
+        val f: (String) -> Int = { it.toInt() }
+        assert(maybeToList(Maybe.Nothing<String>()).map(f)).isEqualTo(maybeToList(Maybe.Nothing<String>().map(f)))
+        assert(maybeToList(Maybe.Just("2")).map(f)).isEqualTo(maybeToList(Maybe.Just("2").map(f)))
+    }
+
     private fun checkNaturalityCondition(transformation: (Maybe<Int>) -> List<Int>, nothing: Maybe<Int>, f: (Int) -> Int) {
         assert(transformation(nothing).map(f)).isEqualTo(transformation(nothing.map(f)))
     }
 
 }
 
-fun maybeToList(maybe: Maybe<Int>): List<Int> = when (maybe) {
+fun <T> maybeToList(maybe: Maybe<T>): List<T> = when (maybe) {
     is Maybe.Nothing -> emptyList()
     is Maybe.Just -> listOf(maybe.value)
 }
