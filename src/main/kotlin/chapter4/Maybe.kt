@@ -10,10 +10,19 @@ fun makeTotal(f: (Int) -> Int): (Int) -> Maybe<Int> = { x ->
 }
 
 sealed class Maybe<T> {
+    abstract fun map(f: (T) -> T): Maybe<T>;
+
     abstract val value: T
 
-    data class Just<T>(override val value: T) : Maybe<T>()
+    data class Just<T>(override val value: T) : Maybe<T>() {
+        override fun map(f: (T) -> T): Maybe<T> {
+            TODO("not implemented")
+        }
+    }
+
     class Nothing<T> : Maybe<T>() {
+        override fun map(f: (T) -> T): Maybe<T> = Maybe.Nothing()
+
         override val value: T
             get() = TODO("No value")
 
